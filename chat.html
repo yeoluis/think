@@ -16,12 +16,10 @@
   --text: #1c1c1e;
   --text-secondary: #6e6e73;
   --accent: #007aff;
-  --accent-light: rgba(0,122,255,0.12);
   --bubble-user: #007aff;
   --bubble-ai: rgba(255,255,255,0.85);
-  --shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-  --radius: 20px;
 }
 
 body {
@@ -35,7 +33,6 @@ body {
   overflow: hidden;
 }
 
-/* 动态背景光晕 */
 body::before {
   content: '';
   position: fixed;
@@ -43,8 +40,7 @@ body::before {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(120,140,255,0.18) 0%, transparent 70%);
   top: -15vw; left: -10vw;
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
 body::after {
   content: '';
@@ -53,11 +49,9 @@ body::after {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255,150,180,0.15) 0%, transparent 70%);
   bottom: 5vw; right: -10vw;
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
 
-/* 顶栏 */
 header {
   display: flex;
   align-items: center;
@@ -69,16 +63,11 @@ header {
   backdrop-filter: var(--blur);
   border-bottom: 1px solid var(--glass-border);
   flex-shrink: 0;
-  position: relative;
-  z-index: 10;
+  position: relative; z-index: 10;
   box-shadow: var(--shadow-sm);
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.header-left { display: flex; align-items: center; gap: 10px; }
 
 .avatar {
   width: 34px; height: 34px;
@@ -90,33 +79,46 @@ header {
   flex-shrink: 0;
 }
 
-.header-info h1 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
-  line-height: 1.2;
-}
+.header-info h1 { font-size: 16px; font-weight: 600; line-height: 1.2; }
+.provider-badge { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
 
-.provider-badge {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-top: 1px;
-}
+.header-actions { display: flex; gap: 8px; align-items: center; }
 
 .header-btn {
   background: var(--glass-dark);
   border: 1px solid var(--glass-border);
   color: var(--accent);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 13px; font-weight: 500;
   padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
+  border-radius: 20px; cursor: pointer;
   -webkit-backdrop-filter: var(--blur);
   backdrop-filter: var(--blur);
   transition: all 0.2s;
 }
 .header-btn:active { opacity: 0.7; transform: scale(0.96); }
+.header-btn.icon-btn { padding: 6px 10px; font-size: 16px; }
+
+/* 记忆条 */
+#memory-bar {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(255,255,255,0.6);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
+  position: relative; z-index: 9;
+}
+#memory-bar.show { display: flex; }
+.memory-icon { font-size: 14px; }
+.memory-name { font-size: 12px; color: var(--text-secondary); flex: 1; }
+.memory-name strong { color: var(--text); font-weight: 500; }
+.memory-clear {
+  background: none; border: none; color: #ff3b30;
+  font-size: 12px; cursor: pointer; padding: 2px 6px;
+}
 
 /* 设置面板 */
 #settings-panel {
@@ -129,8 +131,7 @@ header {
   gap: 14px;
   flex-direction: column;
   flex-shrink: 0;
-  position: relative;
-  z-index: 9;
+  position: relative; z-index: 9;
   box-shadow: var(--shadow-sm);
 }
 #settings-panel.open { display: flex; }
@@ -143,141 +144,77 @@ header {
 }
 
 .setting-row {
-  display: flex;
-  align-items: center;
-  padding: 11px 14px;
-  gap: 10px;
+  display: flex; align-items: center;
+  padding: 11px 14px; gap: 10px;
   border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 .setting-row:last-child { border-bottom: none; }
-
-.setting-row label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text);
-  width: 72px;
-  flex-shrink: 0;
-}
-
-.setting-row input,
-.setting-row select {
-  flex: 1;
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 13px;
-  outline: none;
-  font-family: inherit;
-  text-align: right;
+.setting-row label { font-size: 13px; font-weight: 500; width: 72px; flex-shrink: 0; }
+.setting-row input, .setting-row select {
+  flex: 1; background: none; border: none;
+  color: var(--text-secondary); font-size: 13px;
+  outline: none; font-family: inherit; text-align: right;
 }
 .setting-row select { cursor: pointer; }
 .setting-row input::placeholder { color: #aaa; }
 
 .save-btn {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 14px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
+  background: var(--accent); color: white; border: none;
+  padding: 12px; border-radius: 14px;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; width: 100%;
   transition: all 0.2s;
-  width: 100%;
 }
 .save-btn:active { opacity: 0.85; transform: scale(0.98); }
 
 /* 消息区 */
 #messages {
-  flex: 1;
-  overflow-y: auto;
+  flex: 1; overflow-y: auto;
   padding: 16px 16px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  position: relative;
-  z-index: 1;
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative; z-index: 1;
   -webkit-overflow-scrolling: touch;
 }
-
 #messages::-webkit-scrollbar { display: none; }
 
-/* 日期分割 */
-.date-divider {
-  text-align: center;
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin: 4px 0 8px;
-}
-
-/* 消息气泡 */
-.msg-row {
-  display: flex;
-  flex-direction: column;
-  max-width: 78%;
-}
+.msg-row { display: flex; flex-direction: column; max-width: 78%; }
 .msg-row.user { align-self: flex-end; align-items: flex-end; }
 .msg-row.ai { align-self: flex-start; align-items: flex-start; }
 
-.msg-name {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-bottom: 3px;
-  padding: 0 4px;
-}
+.msg-name { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; padding: 0 4px; }
 
 .bubble {
-  padding: 10px 14px;
-  border-radius: 18px;
-  font-size: 15px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  word-break: break-word;
+  padding: 10px 14px; border-radius: 18px;
+  font-size: 15px; line-height: 1.5;
+  white-space: pre-wrap; word-break: break-word;
   box-shadow: var(--shadow-sm);
 }
 
 .msg-row.user .bubble {
-  background: var(--bubble-user);
-  color: white;
+  background: var(--bubble-user); color: white;
   border-bottom-right-radius: 5px;
 }
-
 .msg-row.ai .bubble {
   background: var(--bubble-ai);
-  -webkit-backdrop-filter: var(--blur);
-  backdrop-filter: var(--blur);
-  color: var(--text);
-  border-bottom-left-radius: 5px;
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  color: var(--text); border-bottom-left-radius: 5px;
   border: 1px solid var(--glass-border);
 }
 
-.msg-time {
-  font-size: 10px;
-  color: var(--text-secondary);
-  margin-top: 3px;
-  padding: 0 4px;
-}
+.msg-time { font-size: 10px; color: var(--text-secondary); margin-top: 3px; padding: 0 4px; }
 
-/* 输入中动画 */
 .typing-bubble {
   background: var(--bubble-ai);
-  -webkit-backdrop-filter: var(--blur);
-  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
   border: 1px solid var(--glass-border);
-  padding: 12px 16px;
-  border-radius: 18px;
-  border-bottom-left-radius: 5px;
+  padding: 12px 16px; border-radius: 18px; border-bottom-left-radius: 5px;
   box-shadow: var(--shadow-sm);
-  display: flex;
-  gap: 5px;
-  align-items: center;
+  display: flex; gap: 5px; align-items: center;
 }
 .typing-bubble span {
-  width: 6px; height: 6px;
-  border-radius: 50%;
+  width: 6px; height: 6px; border-radius: 50%;
   background: var(--text-secondary);
-  animation: bounce 1.2s infinite;
-  opacity: 0.5;
+  animation: bounce 1.2s infinite; opacity: 0.5;
 }
 .typing-bubble span:nth-child(2) { animation-delay: 0.15s; }
 .typing-bubble span:nth-child(3) { animation-delay: 0.3s; }
@@ -286,68 +223,44 @@ header {
   30% { transform: translateY(-4px); opacity: 1; }
 }
 
-/* 系统消息 */
 .sys-msg {
-  text-align: center;
-  font-size: 12px;
-  color: var(--text-secondary);
+  text-align: center; font-size: 12px; color: var(--text-secondary);
   background: rgba(255,255,255,0.5);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border-radius: 10px;
-  padding: 5px 12px;
-  align-self: center;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border-radius: 10px; padding: 5px 12px; align-self: center;
   border: 1px solid var(--glass-border);
 }
 
-/* 空状态 */
 #empty {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: var(--text-secondary);
-  pointer-events: none;
-  padding-bottom: 60px;
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px; color: var(--text-secondary);
+  pointer-events: none; padding-bottom: 60px;
 }
 #empty .emoji { font-size: 44px; }
 #empty p { font-size: 14px; }
 
 /* 输入区 */
 #input-area {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
+  display: flex; align-items: flex-end; gap: 10px;
   padding: 10px 14px;
   padding-bottom: calc(10px + env(safe-area-inset-bottom));
   background: var(--glass);
-  -webkit-backdrop-filter: var(--blur);
-  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
   border-top: 1px solid var(--glass-border);
-  flex-shrink: 0;
-  position: relative;
-  z-index: 10;
+  flex-shrink: 0; position: relative; z-index: 10;
   box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
 }
 
 #input {
-  flex: 1;
-  background: rgba(255,255,255,0.7);
+  flex: 1; background: rgba(255,255,255,0.7);
   border: 1px solid var(--glass-border);
-  color: var(--text);
-  font-size: 15px;
-  padding: 10px 14px;
-  border-radius: 22px;
-  outline: none;
-  resize: none;
-  max-height: 110px;
-  min-height: 42px;
-  line-height: 1.5;
-  font-family: inherit;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  color: var(--text); font-size: 15px;
+  padding: 10px 14px; border-radius: 22px;
+  outline: none; resize: none;
+  max-height: 110px; min-height: 42px;
+  line-height: 1.5; font-family: inherit;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   transition: border-color 0.2s, box-shadow 0.2s;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
 }
@@ -358,22 +271,39 @@ header {
 #input::placeholder { color: #aaa; }
 
 #send-btn {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  border: none;
-  background: var(--accent);
-  color: white;
-  font-size: 17px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 2px 10px rgba(0,122,255,0.35);
+  width: 42px; height: 42px; border-radius: 50%; border: none;
+  background: var(--accent); color: white; font-size: 17px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; box-shadow: 0 2px 10px rgba(0,122,255,0.35);
   transition: all 0.2s;
 }
 #send-btn:active { transform: scale(0.92); opacity: 0.85; }
 #send-btn:disabled { background: #c7c7cc; box-shadow: none; cursor: not-allowed; }
 
-/* Provider 颜色 */
+/* 隐藏的文件输入 */
+#file-input { display: none; }
+
+/* 底部工具栏 */
+#toolbar {
+  display: flex; gap: 8px;
+  padding: 0 14px 10px;
+  padding-bottom: calc(2px + env(safe-area-inset-bottom));
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  flex-shrink: 0; position: relative; z-index: 10;
+}
+
+.tool-btn {
+  flex: 1; background: rgba(255,255,255,0.6);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary); font-size: 12px; font-weight: 500;
+  padding: 7px 10px; border-radius: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  transition: all 0.2s;
+}
+.tool-btn:active { opacity: 0.7; transform: scale(0.97); }
+.tool-btn .icon { font-size: 14px; }
+
 .provider-claude { color: #c96a30; }
 .provider-openai { color: #10a37f; }
 .provider-deepseek { color: #4d6bfe; }
@@ -390,8 +320,17 @@ header {
       <div class="provider-badge" id="provider-badge">未配置</div>
     </div>
   </div>
-  <button class="header-btn" id="settings-btn">设置</button>
+  <div class="header-actions">
+    <button class="header-btn" id="settings-btn">设置</button>
+  </div>
 </header>
+
+<!-- 记忆文件提示条 -->
+<div id="memory-bar">
+  <span class="memory-icon">🧠</span>
+  <span class="memory-name">记忆：<strong id="memory-filename">未加载</strong></span>
+  <button class="memory-clear" id="memory-clear-btn">移除</button>
+</div>
 
 <div id="settings-panel">
   <div class="setting-group">
@@ -410,7 +349,7 @@ header {
     </div>
     <div class="setting-row">
       <label>模型</label>
-      <input type="text" id="model" placeholder="留空使用默认模型" />
+      <input type="text" id="model" placeholder="留空使用默认" />
     </div>
     <div class="setting-row">
       <label>系统提示</label>
@@ -436,13 +375,26 @@ header {
   </button>
 </div>
 
+<div id="toolbar">
+  <button class="tool-btn" id="upload-btn">
+    <span class="icon">🧠</span> 上传记忆
+  </button>
+  <button class="tool-btn" id="export-btn">
+    <span class="icon">💾</span> 导出对话
+  </button>
+  <button class="tool-btn" id="clear-btn">
+    <span class="icon">🗑</span> 清空对话
+  </button>
+</div>
+
+<input type="file" id="file-input" accept=".txt,.md,.json" />
+
 <script>
-// ── 配置 ──────────────────────────────────────────────
 const PROVIDERS = {
-  claude:   { name: 'Claude',    defaultModel: 'claude-sonnet-4-6',              color: '#c96a30' },
-  openai:   { name: 'GPT',       defaultModel: 'gpt-4o',                          color: '#10a37f' },
-  deepseek: { name: 'DeepSeek',  defaultModel: 'deepseek-chat',                   color: '#4d6bfe' },
-  glm:      { name: 'GLM',       defaultModel: 'glm-4-flash',                     color: '#7b4fd4' },
+  claude:   { name: 'Claude',   defaultModel: 'claude-sonnet-4-6', color: '#c96a30' },
+  openai:   { name: 'GPT',      defaultModel: 'gpt-4o',             color: '#10a37f' },
+  deepseek: { name: 'DeepSeek', defaultModel: 'deepseek-chat',      color: '#4d6bfe' },
+  glm:      { name: 'GLM',      defaultModel: 'glm-4-flash',        color: '#7b4fd4' },
 };
 
 const ENDPOINTS = {
@@ -452,40 +404,50 @@ const ENDPOINTS = {
   glm:      'https://open.bigmodel.cn/api/paas/v4/chat/completions',
 };
 
-// ── 状态 ──────────────────────────────────────────────
 let config = {
   provider:     localStorage.getItem('provider')     || 'claude',
   apiKey:       localStorage.getItem('apiKey')       || '',
   model:        localStorage.getItem('model')        || '',
   systemPrompt: localStorage.getItem('systemPrompt') || '',
 };
-let history = [];
+
+// 对话历史存 localStorage
+let history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+let memoryContent = '';
+let memoryFilename = '';
 let isLoading = false;
 
-// ── DOM ───────────────────────────────────────────────
-const settingsBtn   = document.getElementById('settings-btn');
-const settingsPanel = document.getElementById('settings-panel');
-const providerSel   = document.getElementById('provider');
-const apiKeyInput   = document.getElementById('api-key');
-const modelInput    = document.getElementById('model');
-const systemInput   = document.getElementById('system-prompt');
-const saveBtn       = document.getElementById('save-btn');
-const messagesEl    = document.getElementById('messages');
-const inputEl       = document.getElementById('input');
-const sendBtn       = document.getElementById('send-btn');
-const emptyEl       = document.getElementById('empty');
-const avatarEl      = document.getElementById('avatar');
-const headerTitle   = document.getElementById('header-title');
-const providerBadge = document.getElementById('provider-badge');
+// DOM
+const settingsBtn    = document.getElementById('settings-btn');
+const settingsPanel  = document.getElementById('settings-panel');
+const providerSel    = document.getElementById('provider');
+const apiKeyInput    = document.getElementById('api-key');
+const modelInput     = document.getElementById('model');
+const systemInput    = document.getElementById('system-prompt');
+const saveBtn        = document.getElementById('save-btn');
+const messagesEl     = document.getElementById('messages');
+const inputEl        = document.getElementById('input');
+const sendBtn        = document.getElementById('send-btn');
+const emptyEl        = document.getElementById('empty');
+const avatarEl       = document.getElementById('avatar');
+const headerTitle    = document.getElementById('header-title');
+const providerBadge  = document.getElementById('provider-badge');
+const uploadBtn      = document.getElementById('upload-btn');
+const exportBtn      = document.getElementById('export-btn');
+const clearBtn       = document.getElementById('clear-btn');
+const fileInput      = document.getElementById('file-input');
+const memoryBar      = document.getElementById('memory-bar');
+const memoryFilenameEl = document.getElementById('memory-filename');
+const memoryClearBtn = document.getElementById('memory-clear-btn');
 
-// ── 初始化 ────────────────────────────────────────────
 function init() {
-  providerSel.value   = config.provider;
-  apiKeyInput.value   = config.apiKey;
-  modelInput.value    = config.model;
-  systemInput.value   = config.systemPrompt;
+  providerSel.value  = config.provider;
+  apiKeyInput.value  = config.apiKey;
+  modelInput.value   = config.model;
+  systemInput.value  = config.systemPrompt;
   updateHeader();
   updateSendBtn();
+  renderHistory();
 }
 
 function updateHeader() {
@@ -500,60 +462,19 @@ function updateSendBtn() {
   sendBtn.disabled = !config.apiKey || isLoading;
 }
 
-// ── 设置 ──────────────────────────────────────────────
-settingsBtn.addEventListener('click', () => {
-  settingsPanel.classList.toggle('open');
-});
+function saveHistory() {
+  localStorage.setItem('chatHistory', JSON.stringify(history));
+}
 
-saveBtn.addEventListener('click', () => {
-  config.provider     = providerSel.value;
-  config.apiKey       = apiKeyInput.value.trim();
-  config.model        = modelInput.value.trim();
-  config.systemPrompt = systemInput.value.trim();
-
-  localStorage.setItem('provider',     config.provider);
-  localStorage.setItem('apiKey',       config.apiKey);
-  localStorage.setItem('model',        config.model);
-  localStorage.setItem('systemPrompt', config.systemPrompt);
-
-  settingsPanel.classList.remove('open');
-  updateHeader();
-  updateSendBtn();
-  addSysMsg('设置已保存 ✓');
-});
-
-// ── 输入框 ────────────────────────────────────────────
-inputEl.addEventListener('input', () => {
-  inputEl.style.height = 'auto';
-  inputEl.style.height = Math.min(inputEl.scrollHeight, 110) + 'px';
-});
-
-inputEl.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
-});
-
-sendBtn.addEventListener('click', send);
-
-// ── UI helpers ────────────────────────────────────────
-function removeEmpty() {
+// ── 渲染历史 ──────────────────────────────────────────
+function renderHistory() {
+  if (history.length === 0) return;
   if (emptyEl && emptyEl.parentNode) emptyEl.remove();
+  history.forEach(msg => renderMsg(msg.role, msg.content, false));
 }
 
-function now() {
-  return new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-}
-
-function addSysMsg(text) {
-  removeEmpty();
-  const el = document.createElement('div');
-  el.className = 'sys-msg';
-  el.textContent = text;
-  messagesEl.appendChild(el);
-  scrollDown();
-}
-
-function addMsg(role, text) {
-  removeEmpty();
+function renderMsg(role, text, scroll = true) {
+  if (emptyEl && emptyEl.parentNode) emptyEl.remove();
   const row = document.createElement('div');
   row.className = 'msg-row ' + (role === 'user' ? 'user' : 'ai');
 
@@ -571,16 +492,24 @@ function addMsg(role, text) {
 
   const time = document.createElement('div');
   time.className = 'msg-time';
-  time.textContent = now();
+  time.textContent = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
   row.appendChild(time);
 
   messagesEl.appendChild(row);
+  if (scroll) scrollDown();
+}
+
+function addSysMsg(text) {
+  if (emptyEl && emptyEl.parentNode) emptyEl.remove();
+  const el = document.createElement('div');
+  el.className = 'sys-msg';
+  el.textContent = text;
+  messagesEl.appendChild(el);
   scrollDown();
-  return bubble;
 }
 
 function addTyping() {
-  removeEmpty();
+  if (emptyEl && emptyEl.parentNode) emptyEl.remove();
   const row = document.createElement('div');
   row.className = 'msg-row ai';
   const name = document.createElement('div');
@@ -600,7 +529,99 @@ function scrollDown() {
   messagesEl.scrollTo({ top: messagesEl.scrollHeight, behavior: 'smooth' });
 }
 
-// ── API 调用 ──────────────────────────────────────────
+// ── 设置 ──────────────────────────────────────────────
+settingsBtn.addEventListener('click', () => settingsPanel.classList.toggle('open'));
+
+saveBtn.addEventListener('click', () => {
+  config.provider     = providerSel.value;
+  config.apiKey       = apiKeyInput.value.trim();
+  config.model        = modelInput.value.trim();
+  config.systemPrompt = systemInput.value.trim();
+  localStorage.setItem('provider',     config.provider);
+  localStorage.setItem('apiKey',       config.apiKey);
+  localStorage.setItem('model',        config.model);
+  localStorage.setItem('systemPrompt', config.systemPrompt);
+  settingsPanel.classList.remove('open');
+  updateHeader();
+  updateSendBtn();
+  addSysMsg('设置已保存 ✓');
+});
+
+// ── 上传记忆 ──────────────────────────────────────────
+uploadBtn.addEventListener('click', () => fileInput.click());
+
+fileInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    memoryContent = ev.target.result;
+    memoryFilename = file.name;
+    memoryFilenameEl.textContent = file.name;
+    memoryBar.classList.add('show');
+    addSysMsg(`🧠 记忆已加载：${file.name}`);
+  };
+  reader.readAsText(file, 'utf-8');
+  fileInput.value = '';
+});
+
+memoryClearBtn.addEventListener('click', () => {
+  memoryContent = '';
+  memoryFilename = '';
+  memoryBar.classList.remove('show');
+  addSysMsg('记忆已移除');
+});
+
+// ── 导出对话 ──────────────────────────────────────────
+exportBtn.addEventListener('click', () => {
+  if (history.length === 0) { addSysMsg('没有可导出的对话'); return; }
+  const lines = history.map(m => {
+    const role = m.role === 'user' ? '我' : PROVIDERS[config.provider].name;
+    return `【${role}】\n${m.content}`;
+  });
+  const text = lines.join('\n\n---\n\n');
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `对话_${new Date().toLocaleDateString('zh-CN').replace(/\//g, '-')}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  addSysMsg('对话已导出 ✓');
+});
+
+// ── 清空对话 ──────────────────────────────────────────
+clearBtn.addEventListener('click', () => {
+  if (!confirm('确定清空所有对话记录吗？')) return;
+  history = [];
+  saveHistory();
+  messagesEl.innerHTML = '';
+  const empty = document.createElement('div');
+  empty.id = 'empty';
+  empty.innerHTML = '<div class="emoji">💬</div><p>配置 API Key 后开始对话</p>';
+  messagesEl.appendChild(empty);
+  addSysMsg('对话已清空');
+});
+
+// ── 输入框 ────────────────────────────────────────────
+inputEl.addEventListener('input', () => {
+  inputEl.style.height = 'auto';
+  inputEl.style.height = Math.min(inputEl.scrollHeight, 110) + 'px';
+});
+inputEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+});
+sendBtn.addEventListener('click', send);
+
+// ── API ───────────────────────────────────────────────
+function buildSystem() {
+  let sys = config.systemPrompt || '';
+  if (memoryContent) {
+    sys = (sys ? sys + '\n\n' : '') + '以下是用户的记忆文件，请参考：\n\n' + memoryContent;
+  }
+  return sys;
+}
+
 async function callClaude(model, messages, system, key) {
   const body = { model, max_tokens: 2048, messages };
   if (system) body.system = system;
@@ -634,15 +655,16 @@ async function callOpenAI(endpoint, model, messages, system, key) {
   return data.choices?.[0]?.message?.content || '';
 }
 
-// ── 发送 ──────────────────────────────────────────────
 async function send() {
   const text = inputEl.value.trim();
   if (!text || isLoading || !config.apiKey) return;
 
   inputEl.value = '';
   inputEl.style.height = 'auto';
-  addMsg('user', text);
+
+  renderMsg('user', text);
   history.push({ role: 'user', content: text });
+  saveHistory();
 
   isLoading = true;
   updateSendBtn();
@@ -650,17 +672,19 @@ async function send() {
 
   const p = config.provider;
   const model = config.model || PROVIDERS[p].defaultModel;
+  const system = buildSystem();
 
   try {
     let reply = '';
     if (p === 'claude') {
-      reply = await callClaude(model, history, config.systemPrompt, config.apiKey);
+      reply = await callClaude(model, history, system, config.apiKey);
     } else {
-      reply = await callOpenAI(ENDPOINTS[p], model, history, config.systemPrompt, config.apiKey);
+      reply = await callOpenAI(ENDPOINTS[p], model, history, system, config.apiKey);
     }
     typingEl.remove();
-    addMsg('assistant', reply);
+    renderMsg('assistant', reply);
     history.push({ role: 'assistant', content: reply });
+    saveHistory();
   } catch (e) {
     typingEl.remove();
     addSysMsg('出错了：' + e.message);
